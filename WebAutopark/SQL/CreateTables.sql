@@ -1,43 +1,43 @@
-﻿CREATE TABLE [VECHICLE_TYPES](
-	[ID] int constraint [VECHICLE_TYPES_PK] primary key identity(1, 1),
-	[TYPE_NAME] nvarchar(100),
-	[TAX_COEFFICIENT] float
+﻿create table [VechicleTypes](
+	[ID] int constraint [VechicleTypesPK] primary key identity(1, 1),
+	[TypeName] nvarchar(100),
+	[TaxCoefficient] float
+);
+go
+
+create table [Vehicles](
+	[ID] int constraint [VehiclesPK] primary key identity(1, 1),
+	[VehicleType] int constraint [VehiclesVechicleTypesFK] foreign key
+		references [VechicleTypes]([ID]),
+	[ModelName] nvarchar(100),
+	[RegistrationNumber] nvarchar(20),
+	[Weight] int,
+	[ManufactureYear] int,
+	[Maileage] int,
+	[Color] int,
+	[TankCapacity] float
+);
+go
+
+create table [Orders](
+	[ID] int constraint [OrdersPK] primary key identity(1, 1),
+	[VehicleID] int constraint [OrdersVehiclesFK] foreign key
+		references [Vehicles]([ID])
+);
+go
+
+create table [Parts](
+	[ID] int constraint [PartsPK] primary key identity(1, 1),
+	[PartName] nvarchar(100)
 );
 GO
 
-CREATE TABLE [VECHICLES](
-	[ID] int constraint [VECHICLE_PK] primary key identity(1, 1),
-	[VEHICLE_TYPE] int constraint [VECHICLE_VECHICLE_TYPE_FK] foreign key
-		references [VECHICLE_TYPES]([ID]),
-	[MODEL_NAME] nvarchar(100),
-	[REGISTRATION_NUMBER] nvarchar(20),
-	[WEIGHT] int,
-	[MANUFACTURE_YEAR] int,
-	[MAILEAGE] int,
-	[COLOR] int,
-	[TANK_CAPACITY] float
-);
-GO
-
-CREATE TABLE [ORDERS](
-	[ID] int constraint [ORDERS_PK] primary key identity(1, 1),
-	[VECHICLE_ID] int constraint [ORDERS_VEHICLE_FK] foreign key
-		references [VECHICLES]([ID])
-);
-GO
-
-CREATE TABLE [PARTS](
-	[ID] int constraint [PARTS_PK] primary key identity(1, 1),
-	[PART_NAME] nvarchar(100)
-);
-GO
-
-CREATE TABLE [ORDERS_PARTS](
-	[ID] int constraint [ORDERS_PARTS_PK] primary key identity(1, 1),
-	[ID_PART] int constraint [ORDERS_PARTS_PARTS_FK] foreign key
+create table [OrdersParts](
+	[ID] int constraint [OrdersPartsPK] primary key identity(1, 1),
+	[PartID] int constraint [OrdersPartsPartsFK] foreign key
 		references [PARTS]([ID]),
-	[ID_ORDER] int constraint [ORDERS_PARTS_ORDERS_FK] foreign key
+	[OrderID] int constraint [OrdersPartsOrdersFK] foreign key
 		references [ORDERS]([ID]),
-	[PART_COUNT] int
+	[PartCount] int
 );
 GO
