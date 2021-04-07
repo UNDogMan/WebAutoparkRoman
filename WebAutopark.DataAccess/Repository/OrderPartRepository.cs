@@ -17,7 +17,7 @@ namespace WebAutopark.DataAccess.Repository
 
         public Task Create(OrderPart item)
         {
-            return connection.ExecuteAsync("insert into OrdersPartsvalues(@PartID, @OrderID, @PartCount); ", item);
+            return connection.ExecuteAsync("insert into OrdersParts values(@PartID, @OrderID, @PartCount); ", item);
         }
 
         public Task Delete(int id)
