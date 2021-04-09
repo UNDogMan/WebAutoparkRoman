@@ -9,9 +9,9 @@ using WebAutopark.DataAccess.Repository.Base;
 
 namespace WebAutopark.DataAccess.Repository
 {
-    public class OrderPartRepository : RepositoryConnection, IRepository<OrderPart>
+    public class OrderPartRepository : RepositoryBase, IRepository<OrderPart>
     {
-        public OrderPartRepository(string connectionString) : base(connectionString)
+        public OrderPartRepository(IConnectionProvider connectionProvider) : base(connectionProvider)
         {
         }
 

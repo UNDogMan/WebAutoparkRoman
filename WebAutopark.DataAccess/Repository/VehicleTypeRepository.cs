@@ -9,9 +9,9 @@ using Dapper;
 
 namespace WebAutopark.DataAccess.Repository
 {
-    public class VehicleTypeRepository : RepositoryConnection, IRepository<VehicleType>
+    public class VehicleTypeRepository : RepositoryBase, IRepository<VehicleType>
     {
-        public VehicleTypeRepository(string connectionString) : base(connectionString)
+        public VehicleTypeRepository(IConnectionProvider connectionProvider) : base(connectionProvider)
         {
 
         }
