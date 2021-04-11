@@ -10,7 +10,7 @@ namespace WebAutopark.DataAccess.Repository.Base
 {
     public class ConnectionProvider : IConnectionProvider
     {
-        private string connectionString;
+        private readonly string connectionString;
 
         public ConnectionProvider(string connectionString)
         {
