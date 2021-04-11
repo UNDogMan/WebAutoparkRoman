@@ -7,7 +7,7 @@ go
 
 create table [Vehicles](
 	[ID] int constraint [VehiclesPK] primary key identity(1, 1),
-	[VehicleType] int constraint [VehiclesVechicleTypesFK] foreign key
+	[VehicleTypeID] int constraint [VehiclesVechicleTypesFK] foreign key
 		references [VechicleTypes]([ID]),
 	[ModelName] nvarchar(100),
 	[RegistrationNumber] nvarchar(20),
