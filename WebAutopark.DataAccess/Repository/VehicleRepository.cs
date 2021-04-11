@@ -30,7 +30,7 @@ namespace WebAutopark.DataAccess.Repository
 
         public Task Delete(int id)
         {
-            return connection.ExecuteAsync("delete VechicleTypes where ID = @ID", new { ID = id });
+            return connection.ExecuteAsync("delete Vehicles where ID = @ID", new { ID = id });
         }
 
         public Task<Vehicle> Get(int id)
