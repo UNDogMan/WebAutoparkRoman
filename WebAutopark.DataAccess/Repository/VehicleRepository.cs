@@ -45,7 +45,7 @@ namespace WebAutopark.DataAccess.Repository
 
         public Task Update(Vehicle item)
         {
-            return connection.ExecuteAsync("update Vehicles set VehicleType = @VehicleTypeID, " +
+            return connection.ExecuteAsync("update Vehicles set Vehicles = @VehicleTypeID, " +
                 "ModelName = @ModelName, " +
                 "RegistrationNumber = @RegistrationNumber, " +
                 "Weight = @Weight, " +
