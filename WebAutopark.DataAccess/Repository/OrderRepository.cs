@@ -9,13 +9,13 @@ using WebAutopark.DataAccess.Repository.Base;
 
 namespace WebAutopark.DataAccess.Repository
 {
-    public class OrderRepository : RepositoryBase, IRepository<Vehicle>
+    public class OrderRepository : RepositoryBase, IRepository<Order>
     {
         public OrderRepository(IConnectionProvider connectionProvider) : base(connectionProvider)
         {
         }
 
-        public Task Create(Vehicle item)
+        public Task Create(Order item)
         {
             return connection.ExecuteAsync("insert into Orders values(@VehicleID)", item);
         }
@@ -25,17 +25,17 @@ namespace WebAutopark.DataAccess.Repository
             return connection.ExecuteAsync("delete Orders where ID = @ID", new { ID = id });
         }
 
-        public Task<Vehicle> Get(int id)
+        public Task<Order> Get(int id)
         {
-            return connection.QueryFirstAsync<Vehicle>("select * from Orders where ID = @ID", new { ID = id });
+            return connection.QueryFirstAsync<Order>("select * from Orders where ID = @ID", new { ID = id });
         }
 
-        public Task<IEnumerable<Vehicle>> GetAll()
+        public Task<IEnumerable<Order>> GetAll()
         {
-            return connection.QueryAsync<Vehicle>("select * from Orders");
+            return connection.QueryAsync<Order>("select * from Orders");
         }
 
-        public Task Update(Vehicle item)
+        public Task Update(Order item)
         {
             return connection.ExecuteAsync("update Orders set VehicleID = @VehicleID where ID = @ID", item);
         }
