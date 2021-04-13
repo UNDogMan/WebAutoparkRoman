@@ -19,6 +19,9 @@ create table [Vehicles](
 );
 go
 
+alter table [Vehicles] add [Consumption] float;
+go
+
 create table [Orders](
 	[ID] int constraint [OrdersPK] primary key identity(1, 1),
 	[VehicleID] int constraint [OrdersVehiclesFK] foreign key
