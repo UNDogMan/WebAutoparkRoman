@@ -17,5 +17,6 @@ namespace WebAutopark.BusinessLogic.DTO
         public int Maileage { get; set; }
         public int Color { get; set; }
         public float TankCapacity { get; set; }
+        public float Consumption { get; set; }
     }
 }

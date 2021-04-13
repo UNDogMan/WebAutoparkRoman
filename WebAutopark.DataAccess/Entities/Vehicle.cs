@@ -17,6 +17,7 @@ namespace WebAutopark.DataAccess.Entities
         public int Maileage { get; set; }
         public Color Color { get; set; }
         public float TankCapacity { get; set; }
+        public float Consumption { get; set; }
 
         public VehicleType VehicleType { get; set; }
     }

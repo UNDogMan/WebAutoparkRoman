@@ -25,7 +25,8 @@ namespace WebAutopark.DataAccess.Repository
                 "@ManufactureYear, " +
                 "@Maileage, " +
                 "@Color, " +
-                "@TankCapacity)", item);
+                "@TankCapacity" +
+                "@Consumption)", item);
         }
 
         public Task Delete(int id)
@@ -53,6 +54,7 @@ namespace WebAutopark.DataAccess.Repository
                 "Maileage = @Maileage, " +
                 "Color = @Color, " +
                 "TankCapacity = @TankCapacity " +
+                "Consumption = @Consumption " +
                 "where ID = @ID", item);
         }
     }
