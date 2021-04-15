@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebAutopark.BusinessLogic.Services.Base;
 using WebAutopark.BusinessLogic.Dto;
+using WebAutopark.BusinessLogic.Extensions;
 using WebAutopark.DataAccess.Repository.Base;
 using WebAutopark.DataAccess.Entities;
 
@@ -53,18 +54,15 @@ namespace WebAutopark.BusinessLogic.Services
             return vehicleRepository.Update(mapper.Map<Vehicle>(item));
         }
 
-        public async Task<float> GetTaxPerMount(VehicleDto vehicle)
+        public Task<float> GetTaxPerMount(VehicleDto vehicle)
         {
-            const float WeightCoefficient = 0.0013f;
-            const int BaseTax = 30;
-            const int MinTax = 5;
-            var type = await vehicleTypeRepository.Get(vehicle.VehicleTypeID);
-            return vehicle.Weight * WeightCoefficient + type.TaxCoefficient * BaseTax + MinTax;
+            return Task.FromResult(vehicle.CalcTaxPerMount());
         }
 
-        public async Task<float> GetMaxmileage(VehicleDto vehicle)
+        public async Task<float> GetMaxMileage(VehicleDto vehicle)
         {
-            return vehicle.TankCapacity / vehicle.Consumption * 100;
+            var type = mapper.Map<VehicleType, VehicleTypeDto>(await vehicleTypeRepository.Get(vehicle.VehicleTypeID));
+            return vehicle.CalcMaxMileage(type);
         }
     }
 }

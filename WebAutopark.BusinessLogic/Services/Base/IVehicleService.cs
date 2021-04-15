@@ -10,6 +10,6 @@ namespace WebAutopark.BusinessLogic.Services.Base
     public interface IVehicleService : IBaseService<VehicleDto>
     {
         Task<float> GetTaxPerMount(VehicleDto vehicle);
-        Task<float> GetMaxmileage(VehicleDto vehicle);
+        Task<float> GetMaxMileage(VehicleDto vehicle);
     }
 }
