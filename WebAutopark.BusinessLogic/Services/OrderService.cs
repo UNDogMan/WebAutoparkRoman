@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebAutopark.BusinessLogic.Services.Base;
-using WebAutopark.BusinessLogic.DTO;
+using WebAutopark.BusinessLogic.Dto;
 using WebAutopark.DataAccess.Repository.Base;
 using WebAutopark.DataAccess.Entities;
 
 namespace WebAutopark.BusinessLogic.Services
 {
-    public class OrderService : IBaseService<OrderDTO>
+    public class OrderService : IBaseService<OrderDto>
     {
         private readonly IRepository<Order> repository;
         private readonly IMapper mapper;
@@ -22,9 +22,9 @@ namespace WebAutopark.BusinessLogic.Services
             this.mapper = mapper;
         }
 
-        public Task Create(OrderDTO item)
+        public Task Create(OrderDto item)
         {
-            return repository.Create(mapper.Map<Order>(item)); ;
+            return repository.Create(mapper.Map<Order>(item));
         }
 
         public Task Delete(int id)
@@ -32,19 +32,19 @@ namespace WebAutopark.BusinessLogic.Services
             return repository.Delete(id);
         }
 
-        public async Task<OrderDTO> Get(int id)
+        public async Task<OrderDto> Get(int id)
         {
             var entity = await repository.Get(id);
-            return mapper.Map<OrderDTO>(entity);
+            return mapper.Map<OrderDto>(entity);
         }
 
-        public async Task<IEnumerable<OrderDTO>> GetAll()
+        public async Task<IEnumerable<OrderDto>> GetAll()
         {
             var entity = await repository.GetAll();
-            return mapper.Map<IEnumerable<OrderDTO>>(entity);
+            return mapper.Map<IEnumerable<OrderDto>>(entity);
         }
 
-        public Task Update(OrderDTO item)
+        public Task Update(OrderDto item)
         {
             return repository.Update(mapper.Map<Order>(item));
         }

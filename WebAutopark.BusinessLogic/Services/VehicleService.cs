@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebAutopark.BusinessLogic.Services.Base;
-using WebAutopark.BusinessLogic.DTO;
+using WebAutopark.BusinessLogic.Dto;
 using WebAutopark.DataAccess.Repository.Base;
 using WebAutopark.DataAccess.Entities;
 
@@ -30,7 +30,7 @@ namespace WebAutopark.BusinessLogic.Services
             this.mapper = mapper;
         }
 
-        public Task Create(VehicleDTO item)
+        public Task Create(VehicleDto item)
         {
             return vehicleRepository.Create(mapper.Map<Vehicle>(item));
         }
@@ -40,29 +40,29 @@ namespace WebAutopark.BusinessLogic.Services
             return vehicleRepository.Delete(id);
         }
 
-        public async Task<VehicleDTO> Get(int id)
+        public async Task<VehicleDto> Get(int id)
         {
             var entity = await vehicleRepository.Get(id);
-            return mapper.Map<VehicleDTO>(entity);
+            return mapper.Map<VehicleDto>(entity);
         }
 
-        public async Task<IEnumerable<VehicleDTO>> GetAll()
+        public async Task<IEnumerable<VehicleDto>> GetAll()
         {
             var entity = await vehicleRepository.GetAll();
-            return mapper.Map<IEnumerable<VehicleDTO>>(entity);
+            return mapper.Map<IEnumerable<VehicleDto>>(entity);
         }
-        public Task Update(VehicleDTO item)
+        public Task Update(VehicleDto item)
         {
             return vehicleRepository.Update(mapper.Map<Vehicle>(item));
         }
 
-        public async Task<float> GetMaxmileage(VehicleDTO vehicle)
+        public async Task<float> GetTaxPerMount(VehicleDto vehicle)
         {
             var type = await vehicleTypeRepository.Get(vehicle.VehicleTypeID);
             return vehicle.Weight * WeightCoefficient + type.TaxCoefficient * BaseTax + MinTax;
         }
 
-        public async Task<float> GetTaxPerMount(VehicleDTO vehicle)
+        public async Task<float> GetMaxmileage(VehicleDto vehicle)
         {
             return vehicle.TankCapacity / vehicle.Consumption * 100;
         }

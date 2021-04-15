@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper.Execution;
 using WebAutopark.DataAccess.Entities;
-using WebAutopark.BusinessLogic.DTO;
+using WebAutopark.BusinessLogic.Dto;
 
 namespace WebAutopark.BusinessLogic.Extensions
 {
@@ -16,11 +16,11 @@ namespace WebAutopark.BusinessLogic.Extensions
         {
             services.AddAutoMapper(cfg =>
             {
-                cfg.CreateMap<Order, OrderDTO>().ReverseMap();
-                cfg.CreateMap<Part, PartDTO>().ReverseMap();
-                cfg.CreateMap<OrderPart, OrderPartDTO>().ReverseMap();
-                cfg.CreateMap<VehicleType, VehicleTypeDTO>().ReverseMap();
-                cfg.CreateMap<Vehicle, VehicleDTO>().ReverseMap();
+                cfg.CreateMap<Order, OrderDto>().ReverseMap();
+                cfg.CreateMap<Part, PartDto>().ReverseMap();
+                cfg.CreateMap<OrderPart, OrderPartDto>().ReverseMap();
+                cfg.CreateMap<VehicleType, VehicleTypeDto>().ReverseMap();
+                cfg.CreateMap<Vehicle, VehicleDto>().ReverseMap();
             });
         }
     }

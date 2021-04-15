@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebAutopark.BusinessLogic.Services.Base;
-using WebAutopark.BusinessLogic.DTO;
+using WebAutopark.BusinessLogic.Dto;
 using WebAutopark.DataAccess.Repository.Base;
 using WebAutopark.DataAccess.Entities;
 
 namespace WebAutopark.BusinessLogic.Services
 {
-    public class PartService : IBaseService<PartDTO>
+    public class PartService : IBaseService<PartDto>
     {
         private readonly IRepository<Part> repository;
         private readonly IMapper mapper;
@@ -22,7 +22,7 @@ namespace WebAutopark.BusinessLogic.Services
             this.mapper = mapper;
         }
 
-        public Task Create(PartDTO item)
+        public Task Create(PartDto item)
         {
             return repository.Create(mapper.Map<Part>(item));
         }
@@ -32,19 +32,19 @@ namespace WebAutopark.BusinessLogic.Services
             return repository.Delete(id);
         }
 
-        public async Task<PartDTO> Get(int id)
+        public async Task<PartDto> Get(int id)
         {
             var entity = await repository.Get(id);
-            return mapper.Map<PartDTO>(entity);
+            return mapper.Map<PartDto>(entity);
         }
 
-        public async Task<IEnumerable<PartDTO>> GetAll()
+        public async Task<IEnumerable<PartDto>> GetAll()
         {
             var entity = await repository.GetAll();
-            return mapper.Map<IEnumerable<PartDTO>>(entity);
+            return mapper.Map<IEnumerable<PartDto>>(entity);
         }
 
-        public Task Update(PartDTO item)
+        public Task Update(PartDto item)
         {
             return repository.Update(mapper.Map<Part>(item));
         }

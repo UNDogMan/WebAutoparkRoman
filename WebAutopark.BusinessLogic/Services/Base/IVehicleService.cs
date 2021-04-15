@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebAutopark.BusinessLogic.DTO;
+using WebAutopark.BusinessLogic.Dto;
 
 namespace WebAutopark.BusinessLogic.Services.Base
 {
-    public interface IVehicleService : IBaseService<VehicleDTO>
+    public interface IVehicleService : IBaseService<VehicleDto>
     {
-        Task<float> GetTaxPerMount(VehicleDTO vehicle);
-        Task<float> GetMaxmileage(VehicleDTO vehicle);
+        Task<float> GetTaxPerMount(VehicleDto vehicle);
+        Task<float> GetMaxmileage(VehicleDto vehicle);
     }
 }
