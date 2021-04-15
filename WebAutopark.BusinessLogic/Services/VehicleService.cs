@@ -13,9 +13,6 @@ namespace WebAutopark.BusinessLogic.Services
 {
     public class VehicleService : IVehicleService
     {
-        private const float WeightCoefficient = 0.0013f;
-        private const int BaseTax = 30;
-        private const int MinTax = 5;
         private readonly IRepository<Vehicle> vehicleRepository;
         private readonly IRepository<VehicleType> vehicleTypeRepository;
         private readonly IMapper mapper;
@@ -58,6 +55,9 @@ namespace WebAutopark.BusinessLogic.Services
 
         public async Task<float> GetTaxPerMount(VehicleDto vehicle)
         {
+            const float WeightCoefficient = 0.0013f;
+            const int BaseTax = 30;
+            const int MinTax = 5;
             var type = await vehicleTypeRepository.Get(vehicle.VehicleTypeID);
             return vehicle.Weight * WeightCoefficient + type.TaxCoefficient * BaseTax + MinTax;
         }
