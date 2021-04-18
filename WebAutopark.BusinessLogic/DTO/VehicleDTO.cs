@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebAutopark.DataAccess.Entities
+namespace WebAutopark.BusinessLogic.Dto
 {
-    public class Vehicle
+    public class VehicleDto
     {
         public int ID { get; set; }
         public int VehicleTypeID { get; set; }
@@ -15,10 +15,8 @@ namespace WebAutopark.DataAccess.Entities
         public int Weight { get; set; }
         public int ManufactureYear { get; set; }
         public int Maileage { get; set; }
-        public Color Color { get; set; }
+        public int Color { get; set; }
         public float TankCapacity { get; set; }
         public float Consumption { get; set; }
-
-        public VehicleType VehicleType { get; set; }
     }
 }
