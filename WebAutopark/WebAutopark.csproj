@@ -10,4 +10,9 @@
       <Content Remove="wwwroot\lib\bootstrap\LICENSE" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\WebAutopark.BusinessLogic\WebAutopark.BusinessLogic.csproj" />
+      <ProjectReference Include="..\WebAutopark.DataAccess\WebAutopark.DataAccess.csproj" />
+    </ItemGroup>
+
 </Project>
