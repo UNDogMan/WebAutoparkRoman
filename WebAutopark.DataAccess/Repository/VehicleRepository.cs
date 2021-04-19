@@ -25,7 +25,7 @@ namespace WebAutopark.DataAccess.Repository
                 "@ManufactureYear, " +
                 "@Maileage, " +
                 "@Color, " +
-                "@TankCapacity" +
+                "@TankCapacity," +
                 "@Consumption)", item);
         }
 
@@ -46,14 +46,14 @@ namespace WebAutopark.DataAccess.Repository
 
         public Task Update(Vehicle item)
         {
-            return connection.ExecuteAsync("update Vehicles set Vehicles = @VehicleTypeID, " +
+            return connection.ExecuteAsync("update Vehicles set VehicleTypeID = @VehicleTypeID, " +
                 "ModelName = @ModelName, " +
                 "RegistrationNumber = @RegistrationNumber, " +
                 "Weight = @Weight, " +
                 "ManufactureYear = @ManufactureYear, " +
                 "Maileage = @Maileage, " +
                 "Color = @Color, " +
-                "TankCapacity = @TankCapacity " +
+                "TankCapacity = @TankCapacity, " +
                 "Consumption = @Consumption " +
                 "where ID = @ID", item);
         }

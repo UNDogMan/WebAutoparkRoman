@@ -9,15 +9,26 @@ using WebAutopark.DataAccess.Repository.Base;
 
 namespace WebAutopark.DataAccess.Repository
 {
-    public class OrderRepository : RepositoryBase, IRepository<Order>
+    public class OrderRepository : RepositoryBase, IOrderRepository
     {
         public OrderRepository(IConnectionProvider connectionProvider) : base(connectionProvider)
         {
         }
 
+        public Task ClearOrder(int id)
+        {
+            return connection.ExecuteAsync("delete OrdersParts where OrderID = @ID", new { ID = id });
+        }
+
         public Task Create(Order item)
         {
             return connection.ExecuteAsync("insert into Orders values(@VehicleID)", item);
+        }
+
+        public Task<int> CreateWithID(Order item)
+        {
+            
+            return connection.QueryFirstAsync<int>("insert into Orders output INSERTED.ID values(@VehicleID)", item);
         }
 
         public Task Delete(int id)
