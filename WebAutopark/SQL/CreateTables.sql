@@ -8,7 +8,8 @@ go
 create table [Vehicles](
 	[ID] int constraint [VehiclesPK] primary key identity(1, 1),
 	[VehicleTypeID] int constraint [VehiclesVechicleTypesFK] foreign key
-		references [VechicleTypes]([ID]),
+		references [VechicleTypes]([ID])
+		on delete cascade,
 	[ModelName] nvarchar(100),
 	[RegistrationNumber] nvarchar(20),
 	[Weight] int,
@@ -26,6 +27,7 @@ create table [Orders](
 	[ID] int constraint [OrdersPK] primary key identity(1, 1),
 	[VehicleID] int constraint [OrdersVehiclesFK] foreign key
 		references [Vehicles]([ID])
+		on delete cascade
 );
 go
 
@@ -38,9 +40,11 @@ GO
 create table [OrdersParts](
 	[ID] int constraint [OrdersPartsPK] primary key identity(1, 1),
 	[PartID] int constraint [OrdersPartsPartsFK] foreign key
-		references [PARTS]([ID]),
+		references [PARTS]([ID])
+		on delete cascade,
 	[OrderID] int constraint [OrdersPartsOrdersFK] foreign key
-		references [ORDERS]([ID]),
+		references [ORDERS]([ID])
+		on delete cascade,
 	[PartCount] int
 );
 GO
