@@ -1,0 +1,119 @@
+﻿@model IEnumerable<PartViewModel>
+@section Scripts{
+    <script>
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var recipient = button.data('id')
+            var modal = $(this)
+            modal.find('#modal-data-Id').val(recipient)
+        })
+        $('#editModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var recipientId = button.data('id')
+            var recipientText = button.data('text')
+            var modal = $(this)
+            modal.find('#modalEdit-data-Id').val(recipientId)
+            modal.find('#modalEdit-ladel').text(recipientId)
+            modal.find('#modalEdit-data-partname').val(recipientText)
+        })
+    </script>
+}
+@{
+    ViewData["Title"] = "Parts";
+}
+<div class="mb-2">
+    <h1 class="d-inline">@ViewData["Title"]</h1>
+    <button type="button" class="btn d-inline" data-toggle="modal" data-target="#createModal">Create</button>
+</div>
+<div class="panel-body">
+    <ul class="list-group">
+        @foreach (var part in Model)
+        {
+            <li class="list-group-item">
+                <div class="float-left d-inline"><d>@part.ID</d> | @part.PartName</div>
+                <div class="float-right d-inline">
+                    <button type="button" class="btn d-inline" data-toggle="modal" data-target="#editModal" data-id="@part.ID" data-text="@part.PartName">Edit</button>
+                    <button type="button" class="btn d-inline" data-toggle="modal" data-target="#deleteModal" data-id="@part.ID">Delete</button>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Deleting</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to do this?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form asp-action="Delete" method="post">
+                    <input id="modal-data-Id" type="hidden" name="id" value="" />
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-action="Edit" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Part - <span id="modalEdit-ladel"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <input id="modalEdit-data-Id" type="hidden" name="id" value="" />
+                        <div class="form-group">
+                            <label asp-for="First().PartName" class="control-label"></label>
+                            <input asp-for="First().PartName" id="modalEdit-data-partname" class="form-control" />
+                            <span asp-validation-for="First().PartName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-action="Create" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Part</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input id="modalEdit-data-Id" type="hidden" name="id" value="" />
+                    <div>
+                        <div class="form-group">
+                            <label asp-for="First().PartName" class="control-label"></label>
+                            <input asp-for="First().PartName" value="" id="modalEdit-data-partname" class="form-control" />
+                            <span asp-validation-for="First().PartName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

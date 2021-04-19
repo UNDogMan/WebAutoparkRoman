@@ -1,0 +1,55 @@
+﻿@model OrderDetailViewModel
+@{
+    ViewData["Title"] = "Order Type - ID " + Model.ID;
+}
+<div>
+    <h1 class="d-inline">@ViewData["Title"]</h1>
+    <button class="btn d-inline ml-2" data-toggle="modal" data-target="#deleteModal">Delete</button>
+</div>
+<div>
+    <table class="table">
+        <tr>
+            <th>Order ID</th>
+            <td>@Model.ID</td>
+        </tr>
+        <tr>
+            <th>Vehicle Model</th>
+            <td>@Model.VehicleModel</td>
+        </tr>
+    </table>
+</div>
+<h2>Order Parts</h2>
+<div class="panel-body">
+    <ul class="list-group">
+        @foreach (var part in Model.Parts)
+        {
+            <li class="list-group-item">
+                <div><span>@part.PartID</span> | @part.PartName | <span>Count:</span> @part.PartCount</div>
+            </li>
+        }
+    </ul>
+</div>
+<a asp-action="Index">Back to Table</a>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Deleting</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to do this?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form asp-action="Delete" method="post">
+                    <input id="modalDataId" type="hidden" name="id" value="@Model.ID" />
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

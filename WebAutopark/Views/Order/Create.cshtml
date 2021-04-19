@@ -1,0 +1,85 @@
+﻿@model CreationOrderViewModel
+@section Scripts{ 
+    <script>
+        var count = 1
+        $("#addPart").click(function () {
+            count++;
+            console.log("addPart" + count)
+            var element = $("#copyRow").clone()
+            element.find("#PartID").attr("name", "PartID" + count)
+            element.find("#PartCount").attr("name", "PartCount" + count)
+            element.find("button.btn-remove").click(function () {
+                var button = $(event.target)
+                console.log("removePart")
+                button.parent().remove()
+            })
+
+            $("#rowContainer").append(element.children())
+            $("#PartsCount").val(count)
+        })
+        $(document).ready(function () {
+            $("#PartID").attr("name", "PartID1")
+            $("#PartCount").attr("name", "PartCount1")
+        })
+    </script>
+}
+@{
+    ViewData["Title"] = "Create Order";
+}
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+    <div class="card-body">
+        <button class="btn btn-primary mb-2" id="addPart">Add Part</button>
+        <form asp-action="Create" method="post" id="">
+            <input type="hidden" asp-for="ID" />
+            <input type="hidden" id="PartsCount" name="PartsCount" value="1"/>
+            <div id="rowContainer">
+                <div class="row">
+                    <div class="col form-group">
+                        <label asp-for="VehicleID" class="control-label"></label>
+                        @Html.DropDownListFor(x => x.VehicleID,
+                            new SelectList((IEnumerable<SelectListItem>)ViewData["VehicleSelectListItems"], "Value", "Text"), new { @class = "form-control" })
+                        <span asp-validation-for="VehicleID" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row border-top">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Parts.First().PartName" class="control-label"></label>
+                            @Html.DropDownListFor(x => x.Parts.First().PartID,
+                                new SelectList((IEnumerable<SelectListItem>)ViewData["PartsListItems"], "Value", "Text"), new { @class = "form-control"})
+                            <span asp-validation-for="Parts.First().PartID" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Parts.First().PartCount" class="control-label"></label>
+                            <input asp-for="Parts.First().PartCount" class="form-control" />
+                            <span asp-validation-for="Parts.First().PartCount" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2 mb-2">Submit</button>
+        </form>
+    </div>
+</div>
+
+<div id="copyRow" class="d-none">
+    <div class="row border-top">
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Parts.First().PartName" class="control-label"></label>
+                @Html.DropDownListFor(x => x.Parts.First().PartID,
+                    new SelectList((IEnumerable<SelectListItem>)ViewData["PartsListItems"], "Value", "Text"), new { @class = "form-control" })
+                <span asp-validation-for="Parts.First().PartID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Parts.First().PartCount" class="control-label"></label>
+                <input asp-for="Parts.First().PartCount" class="form-control" />
+                <span asp-validation-for="Parts.First().PartCount" class="text-danger"></span>
+            </div>
+            <button type="button" class="btn btn-remove">Remove Part</button>
+        </div>
+    </div>
+</div>
