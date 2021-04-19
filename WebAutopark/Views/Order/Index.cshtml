@@ -1,0 +1,59 @@
+﻿@model IEnumerable<OrderViewModel>
+@section Scripts{
+    <script>
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var recipient = button.data('id')
+            var modal = $(this)
+            modal.find('#modalDataId').val(recipient)
+        })
+    </script>
+}
+@{
+    ViewData["Title"] = "Vehicles";
+}
+<div class="mb-2">
+    <h1 class="d-inline">@ViewData["Title"]</h1>
+    <form class="d-inline ml-2" asp-action="Create" method="get">
+        <button class="btn">Create</button>
+    </form>
+</div>
+<div class="panel-body">
+    <ul class="list-group">
+        @foreach (var order in Model)
+        {
+            <li class="list-group-item">
+                <div class="float-left d-inline"><d>@order.ID</d> | @order.VehicleModel</div>
+                <div class="float-right d-inline">
+                    <form class="d-inline" asp-controller="Order" asp-action="Details" asp-route-id="@order.ID" method="get">
+                        <button class="btn">Details</button>
+                    </form>
+                    <button type="button" class="btn d-inline" data-toggle="modal" data-target="#deleteModal" data-id="@order.ID">Delete</button>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Deleting</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to do this?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form asp-action="Delete" method="post">
+                    <input id="modalDataId" type="hidden" name="id" value="" />
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

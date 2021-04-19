@@ -1,0 +1,26 @@
+﻿@model VehicleTypeViewModel
+@{
+    ViewData["Title"] = "Create Vehicle Type";
+}
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <div class="row">
+                <div class="col form-group">
+                    <label asp-for="TypeName" class="control-label"></label>
+                    <input asp-for="TypeName" class="form-control" />
+                    <span asp-validation-for="TypeName" class="text-danger"></span>
+                </div>
+                <div class="col form-group">
+                    <label asp-for="TaxCoefficient" class="control-label"></label>
+                    <input asp-for="TaxCoefficient" class="form-control" />
+                    <span asp-validation-for="TaxCoefficient" class="text-danger"></span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
