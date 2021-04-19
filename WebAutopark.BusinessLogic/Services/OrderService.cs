@@ -7,24 +7,35 @@ using System.Threading.Tasks;
 using WebAutopark.BusinessLogic.Services.Base;
 using WebAutopark.BusinessLogic.Dto;
 using WebAutopark.DataAccess.Repository.Base;
+using WebAutopark.DataAccess.Repository;
 using WebAutopark.DataAccess.Entities;
 
 namespace WebAutopark.BusinessLogic.Services
 {
-    public class OrderService : IBaseService<OrderDto>
+    public class OrderService : IOrderService
     {
-        private readonly IRepository<Order> repository;
+        private readonly IOrderRepository repository;
         private readonly IMapper mapper;
 
-        public OrderService(IRepository<Order> repository, IMapper mapper)
+        public OrderService(IOrderRepository repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
         }
 
+        public Task ClearOrder(int id)
+        {
+            return repository.ClearOrder(id);
+        }
+
         public Task Create(OrderDto item)
         {
             return repository.Create(mapper.Map<Order>(item));
+        }
+
+        public Task<int> CreateWithID(OrderDto item)
+        {
+            return repository.CreateWithID(mapper.Map<Order>(item));
         }
 
         public Task Delete(int id)

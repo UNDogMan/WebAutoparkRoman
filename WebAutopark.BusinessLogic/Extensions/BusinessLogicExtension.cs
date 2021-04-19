@@ -14,6 +14,7 @@ namespace WebAutopark.BusinessLogic.Extensions
     {
         public static void AddBusinessLogic(this IServiceCollection services)
         {
+            services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IBaseService<OrderDto>, OrderService>();
             services.AddScoped<IBaseService<PartDto>, PartService>();
             services.AddScoped<IBaseService<OrderPartDto>, OrderPartService>();
