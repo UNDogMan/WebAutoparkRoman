@@ -12,7 +12,7 @@ namespace WebAutopark.BusinessLogic.Extensions
 {
     public static class AutoMapperExtension
     {
-        public static void AddMapper(this IServiceCollection services)
+        public static void AddMapperForDto(this IServiceCollection services)
         {
             services.AddAutoMapper(cfg =>
             {

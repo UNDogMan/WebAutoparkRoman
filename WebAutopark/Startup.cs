@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebAutopark.DataAccess.Extensions;
 using WebAutopark.BusinessLogic.Extensions;
+using WebAutopark.Extensions;
 
 namespace WebAutopark
 {
@@ -27,7 +28,8 @@ namespace WebAutopark
         {
             services.AddDataAccess(Configuration.GetConnectionString("Azure"));
             services.AddBusinessLogic();
-            services.AddMapper();
+            services.AddMapperForDto();
+            services.AddMapperForViewModels();
             services.AddControllersWithViews();
         }
 
