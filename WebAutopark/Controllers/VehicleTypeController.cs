@@ -16,26 +16,22 @@ namespace WebAutopark.Controllers
     public class VehicleTypeController : Controller
     {
         private readonly IBaseService<VehicleTypeDto> vehicleTypeService;
+        private readonly IMapper mapper;
 
-        public VehicleTypeController(IBaseService<VehicleTypeDto> vehicleTypeService)
+        public VehicleTypeController(IBaseService<VehicleTypeDto> vehicleTypeService, IMapper mapper)
         {
             this.vehicleTypeService = vehicleTypeService;
+            this.mapper = mapper;
         }
 
-        public async Task<ActionResult> IndexAsync()
+        public async Task<ActionResult> Index()
         {
-            var mapper = new Mapper(
-                new MapperConfiguration(
-                    cfg => cfg.CreateMap<VehicleTypeDto, VehicleTypeViewModel>().ReverseMap()));
             var types = mapper.Map<IEnumerable<VehicleTypeViewModel>>(await vehicleTypeService.GetAll());
             return View(types);
         }
 
-        public async Task<ActionResult> DetailsAsync(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            var mapper = new Mapper(
-                   new MapperConfiguration(
-                       cfg => cfg.CreateMap<VehicleTypeDto, VehicleTypeViewModel>().ReverseMap()));
             var type = mapper.Map<VehicleTypeViewModel>(await vehicleTypeService.Get(id));
             return View(type);
         }
@@ -47,60 +43,37 @@ namespace WebAutopark.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync([Bind(include: "TypeName,TaxCoefficient")]VehicleTypeViewModel model)
+        public async Task<ActionResult> Create([Bind(include: "TypeName,TaxCoefficient")]VehicleTypeViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    var mapper = new Mapper(
-                       new MapperConfiguration(
-                           cfg => cfg.CreateMap<VehicleTypeDto, VehicleTypeViewModel>().ReverseMap()));
-                    var type = mapper.Map<VehicleTypeDto>(model);
-                    await vehicleTypeService.Create(type);
-                }
-                else
-                {
-                    return View();
-                }
-                return RedirectToAction("Index");
+                var type = mapper.Map<VehicleTypeDto>(model);
+                await vehicleTypeService.Create(type);
             }
-            catch
+            else
             {
                 return View();
             }
+            return RedirectToAction("Index");
         }
 
-        public async Task<ActionResult> EditAsync(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var mapper = new Mapper(
-                   new MapperConfiguration(
-                       cfg => cfg.CreateMap<VehicleTypeDto, VehicleTypeViewModel>().ReverseMap()));
             var type = mapper.Map<VehicleTypeViewModel>(await vehicleTypeService.Get(id));
             return View(type);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditAsync([Bind(include: "ID,TypeName,TaxCoefficient")] VehicleTypeViewModel model)
+        public async Task<ActionResult> Edit([Bind(include: "ID,TypeName,TaxCoefficient")] VehicleTypeViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    var mapper = new Mapper(
-                          new MapperConfiguration(
-                              cfg => cfg.CreateMap<VehicleTypeDto, VehicleTypeViewModel>().ReverseMap()));
-                    var type = mapper.Map<VehicleTypeDto>(model);
-                    await vehicleTypeService.Update(type);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    return View(model);
-                }
+                var type = mapper.Map<VehicleTypeDto>(model);
+                await vehicleTypeService.Update(type);
+                return RedirectToAction("Index");
             }
-            catch
+            else
             {
                 return View(model);
             }
@@ -108,17 +81,10 @@ namespace WebAutopark.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteAsync(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            try
-            {
-                await vehicleTypeService.Delete(id);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            await vehicleTypeService.Delete(id);
+            return RedirectToAction("Index");
         }
     }
 }
