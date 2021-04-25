@@ -15,24 +15,23 @@ namespace WebAutopark.Models
     public class PartController : Controller
     {
         private readonly IBaseService<PartDto> partService;
+        private readonly IMapper mapper;
 
-        public PartController(IBaseService<PartDto> partService)
+        public PartController(IBaseService<PartDto> partService, IMapper mapper)
         {
             this.partService = partService;
+            this.mapper = mapper;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> Index()
         {
-            var mapper = new Mapper(
-                new MapperConfiguration(
-                    cfg => cfg.CreateMap<PartDto, PartViewModel>().ReverseMap()));
             var parts = mapper.Map<IEnumerable<PartViewModel>>(await partService.GetAll());
             return View(parts);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await partService.Delete(id);
             return RedirectToAction("Index");
@@ -40,50 +39,30 @@ namespace WebAutopark.Models
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync(
+        public async Task<ActionResult> Create(
             [Bind(include: "PartName")]
             PartViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    var mapper = new Mapper(
-                       new MapperConfiguration(
-                           cfg => cfg.CreateMap<PartViewModel, PartDto>().ReverseMap()));
-                    var part = mapper.Map<PartDto>(model);
-                    await partService.Create(part);
-                }
-                return RedirectToAction("Index");
+                var part = mapper.Map<PartDto>(model);
+                await partService.Create(part);
             }
-            catch
-            {
-                return RedirectToAction("Index");
-            }
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditAsync(
+        public async Task<ActionResult> Edit(
             [Bind(include: "ID,PartName")]
             PartViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    var mapper = new Mapper(
-                       new MapperConfiguration(
-                           cfg => cfg.CreateMap<PartViewModel, PartDto>().ReverseMap()));
-                    var part = mapper.Map<PartDto>(model);
-                    await partService.Update(part);
-                }
-                return RedirectToAction("Index");
+                var part = mapper.Map<PartDto>(model);
+                await partService.Update(part);
             }
-            catch
-            {
-                return RedirectToAction("Index");
-            }
+            return RedirectToAction("Index");
         }
     }
 }
