@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OrderViewModel>
+﻿@model IEnumerable<OrderDetailViewModel>
 @section Scripts{
     <script>
         $('#deleteModal').on('show.bs.modal', function (event) {
@@ -23,7 +23,7 @@
         @foreach (var order in Model)
         {
             <li class="list-group-item">
-                <div class="float-left d-inline"><d>@order.ID</d> | @order.VehicleModel</div>
+                <div class="float-left d-inline"><d>@order.ID</d> | @order.Vehicle.ModelName</div>
                 <div class="float-right d-inline">
                     <form class="d-inline" asp-controller="Order" asp-action="Details" asp-route-id="@order.ID" method="get">
                         <button class="btn">Details</button>

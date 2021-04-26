@@ -8,7 +8,8 @@ namespace WebAutopark.Models
     public class OrderDetailViewModel
     {
         public int ID { get; set; }
-        public string VehicleModel { get; set; }
+        public int VehicleID { get; set; }
+        public VehicleViewModel Vehicle { get; set; }
         public IEnumerable<OrderedPartViewModel> Parts { get; set; }
     }
 }

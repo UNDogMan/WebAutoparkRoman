@@ -10,6 +10,8 @@ namespace WebAutopark.DataAccess.Repository.Base
     public interface IOrderRepository : IRepository<Order>
     {
         Task ClearOrder(int id);
-        Task<int> CreateWithID(Order item);
+        Task<int> CreateAndReturnID(Order item);
+        Task<Order> GetWithIncludes(int id);
+        Task<IEnumerable<Order>> GetAllWithIncludes();
     }
 }

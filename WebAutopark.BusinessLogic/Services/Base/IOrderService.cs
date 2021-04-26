@@ -10,6 +10,9 @@ namespace WebAutopark.BusinessLogic.Services.Base
     public interface IOrderService : IBaseService<OrderDto>
     {
         Task ClearOrder(int id);
-        Task<int> CreateWithID(OrderDto item);
+        Task<int> CreateAndReturnID(OrderDto item);
+        Task<DetaildOrderDto> GetWithIncludes(int id);
+        Task<IEnumerable<DetaildOrderDto>> GetAllWithIncludes();
+        Task CreateForParts(int vehicleId, IEnumerable<OrderPartDto> parts);
     }
 }

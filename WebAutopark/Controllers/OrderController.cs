@@ -18,52 +18,42 @@ namespace WebAutopark.Controllers
         private readonly IVehicleService vehicleService;
         private readonly IBaseService<PartDto> partService;
         private readonly IBaseService<OrderPartDto> orderPartService;
+        private readonly IMapper mapper;
 
-        public OrderController(IOrderService orderService, IVehicleService vehicleService, IBaseService<PartDto> partService, IBaseService<OrderPartDto> orderPartService)
+        public OrderController(IOrderService orderService,
+            IVehicleService vehicleService,
+            IBaseService<PartDto> partService,
+            IBaseService<OrderPartDto> orderPartService,
+            IMapper mapper)
         {
             this.orderService = orderService;
             this.vehicleService = vehicleService;
             this.partService = partService;
             this.orderPartService = orderPartService;
+            this.mapper = mapper;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> Index()
         {
-            var orders = (await orderService.GetAll())
-                .Select(x => new OrderViewModel { 
-                    ID = x.ID,
-                    VehicleModel = vehicleService.Get(x.VehicleID).Result.ModelName}).ToList();
+            var orders = mapper.Map<IEnumerable<OrderDetailViewModel>>(await orderService.GetAllWithIncludes());
             return View(orders);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await orderService.Delete(id);
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> DetailsAsync(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var order = new OrderDetailViewModel
-            {
-                ID = id,
-                VehicleModel = vehicleService.Get(
-                    orderService.Get(id).Result.VehicleID).Result.ModelName 
-            };
-            order.Parts = (await orderPartService.GetAll()).Where(x => x.OrderID == id).Join(
-                await partService.GetAll(),
-                x => x.PartID,
-                y => y.ID,
-                (x, y) => new OrderedPartViewModel { 
-                    PartID = y.ID,
-                    PartName = y.PartName,
-                    PartCount = x.PartCount
-                });
+            var order = mapper.Map<OrderDetailViewModel>(await orderService.GetWithIncludes(id));
             return View(order);
         }
-        public async Task<ActionResult> CreateAsync()
+
+        public async Task<ActionResult> Create()
         {
             var vehicles = await vehicleService.GetAll();
             ViewData["VehicleSelectListItems"] = vehicles.Select(x => new SelectListItem(x.ModelName, x.ID.ToString())).ToList();
@@ -74,40 +64,28 @@ namespace WebAutopark.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync(
+        public async Task<ActionResult> Create(
             [Bind("VehicleID")]
             CreationOrderViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    int orderID = await orderService.CreateWithID(new OrderDto { VehicleID = model.VehicleID });
-                    var partsCount = int.Parse(HttpContext.Request.Form["PartsCount"]);
-                    foreach(var x in Enumerable.Range(1, partsCount)){
-                        if (HttpContext.Request.Form["PartID" + x.ToString()].Count > 0)
-                        {
-                            int partId = int.Parse(HttpContext.Request.Form["PartID" + x.ToString()]);
-                            int partCount = int.Parse(HttpContext.Request.Form["PartCount" + x.ToString()]);
-                            orderPartService.Create(new OrderPartDto
-                            {
-                                OrderID = orderID,
-                                PartID = partId,
-                                PartCount = partCount
-                            }).Wait();
-                        }
-                    };
-                }
-                else
-                {
-                    return RedirectToAction("Create");
-                }
-                return RedirectToAction("Index");
+                var partsCount = int.Parse(HttpContext.Request.Form["PartsCount"]);
+                var parts = Enumerable.Range(1, partsCount)
+                    .Where(x => HttpContext.Request.Form["PartID" + x.ToString()].Count > 0)
+                    .Select(x => new OrderPartDto
+                    {
+                        OrderID = 0,
+                        PartID = int.Parse(HttpContext.Request.Form["PartID" + x.ToString()]),
+                        PartCount = int.Parse(HttpContext.Request.Form["PartCount" + x.ToString()])
+                    });
+                await orderService.CreateForParts(model.VehicleID, parts);
             }
-            catch
+            else
             {
                 return RedirectToAction("Create");
             }
+            return RedirectToAction("Index");
         }
     }
 }

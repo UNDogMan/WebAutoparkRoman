@@ -19,6 +19,10 @@ namespace WebAutopark.Extensions
                 cfg.CreateMap<VehicleDto, VehicleViewModel>().ReverseMap();
                 cfg.CreateMap<VehicleDto, DetailVehicleViewModel>().ReverseMap();
                 cfg.CreateMap<VehicleTypeDto, VehicleTypeViewModel>().ReverseMap();
+                cfg.CreateMap<OrderDto, OrderDetailViewModel>().ReverseMap();
+                cfg.CreateMap<PartDto, OrderedPartViewModel>().ReverseMap();
+                cfg.CreateMap<DetaildOrderPartDto, OrderedPartViewModel>().ReverseMap();
+                cfg.CreateMap<DetaildOrderDto, OrderDetailViewModel>().ReverseMap();
             });
         }
     }

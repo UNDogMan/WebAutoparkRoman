@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace WebAutopark.BusinessLogic.Dto
 {
-    public class OrderDto
+    public class DetaildOrderPartDto
     {
         public int ID { get; set; }
-        public int VehicleID { get; set; }
-        public VehicleDto Vehicle { get; set; }
-        public List<OrderPartDto> Parts { get; set; }
+        public int PartID { get; set; }
+        public string PartName { get; set; }
+        public int OrderID { get; set; }
+        public int PartCount { get; set; }
     }
 }
