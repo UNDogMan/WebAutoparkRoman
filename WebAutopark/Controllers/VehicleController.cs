@@ -27,6 +27,12 @@ namespace WebAutopark.Controllers
             this.mapper = mapper;
         }
 
+        private async Task<SelectList> GetTypesSelectList()
+        {
+            var types = await vehicleTypeService.GetAll();
+            return new SelectList(types.Select(x => new SelectListItem(x.TypeName, x.ID.ToString())), "Value", "Text");
+        }
+
         public async Task<IActionResult> Index()
         {
             var vehicles = mapper.Map<IEnumerable<VehicleViewModel>>(await vehicleService.GetAll());
@@ -60,8 +66,7 @@ namespace WebAutopark.Controllers
 
         public async Task<ActionResult> Create()
         {
-            var types = await vehicleTypeService.GetAll();
-            ViewData["TypesSelectListItems"] = types.Select(x => new SelectListItem(x.TypeName, x.ID.ToString())).ToList();
+            ViewData["TypesSelectList"] = await GetTypesSelectList();
             return View();
         }
 
@@ -78,9 +83,7 @@ namespace WebAutopark.Controllers
             }
             else
             {
-                var types = await vehicleTypeService.GetAll();
-                ViewData["TypesSelectListItems"] = types.Select(x => new SelectListItem(x.TypeName, x.ID.ToString())).ToList();
-
+                ViewData["TypesSelectList"] = await GetTypesSelectList();
                 return View(model);
             }
             return RedirectToAction("Index");
@@ -88,8 +91,7 @@ namespace WebAutopark.Controllers
         
         public async Task<ActionResult> Edit(int id)
         {
-            var types = await vehicleTypeService.GetAll();
-            ViewData["TypesSelectListItems"] = types.Select(x => new SelectListItem(x.TypeName, x.ID.ToString())).ToList();
+            ViewData["TypesSelectList"] = await GetTypesSelectList();
             var model = mapper.Map<VehicleViewModel>(await vehicleService.Get(id));
             return View(model);
         }
@@ -107,9 +109,7 @@ namespace WebAutopark.Controllers
             }
             else
             {
-                var types = await vehicleTypeService.GetAll();
-                ViewData["TypesSelectListItems"] = types.Select(x => new SelectListItem(x.TypeName, x.ID.ToString())).ToList();
-
+                ViewData["TypesSelectList"] = await GetTypesSelectList();
                 return View(model);
             }
             return RedirectToAction("Index");

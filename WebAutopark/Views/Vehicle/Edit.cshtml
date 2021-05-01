@@ -18,7 +18,7 @@
                 <div class="col form-group">
                     <label asp-for="ModelName" class="control-label"></label>
                     @Html.DropDownListFor(x => x.VehicleTypeID,
-                   new SelectList((IEnumerable<SelectListItem>)ViewData["TypesSelectListItems"], "Value", "Text"), new { @class = "form-control" })
+                   (SelectList)ViewData["TypesSelectList"], new { @class = "form-control" })
                     <span asp-validation-for="ModelName" class="text-danger"></span>
                 </div>
                 <div class="col form-group">

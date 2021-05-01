@@ -65,12 +65,9 @@ namespace WebAutopark.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(
-            [Bind("VehicleID")]
             CreationOrderViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var partsCount = int.Parse(HttpContext.Request.Form["PartsCount"]);
+            var partsCount = int.Parse(HttpContext.Request.Form["PartsCount"]);
                 var parts = Enumerable.Range(1, partsCount)
                     .Where(x => HttpContext.Request.Form["PartID" + x.ToString()].Count > 0)
                     .Select(x => new OrderPartDto
@@ -80,11 +77,6 @@ namespace WebAutopark.Controllers
                         PartCount = int.Parse(HttpContext.Request.Form["PartCount" + x.ToString()])
                     });
                 await orderService.CreateForParts(model.VehicleID, parts);
-            }
-            else
-            {
-                return RedirectToAction("Create");
-            }
             return RedirectToAction("Index");
         }
     }
